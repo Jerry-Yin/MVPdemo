@@ -1,6 +1,7 @@
 package com.jayyin.developer.mvpdemo.interfaces
 
 import com.jayyin.developer.mvpdemo.model.Article
+import java.util.*
 
 /**
  * @description
@@ -9,7 +10,7 @@ import com.jayyin.developer.mvpdemo.model.Article
  **/
 interface ArticleApi {
 
-    fun fetchArticles(listener: onDataListener<List<Article>>)     //获取所有文章简介（列表）
+    fun fetchArticles(listener: onDataListener<LinkedList<Article>>)     //获取所有文章简介（列表）
 
     fun fetchArticleDetails(id: Int)    //获取某篇文章明细
 

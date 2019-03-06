@@ -1,14 +1,13 @@
 package com.jayyin.developer.mvpdemo.activity
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.ProgressBar
 import com.jayyin.developer.mvpdemo.R
 import com.jayyin.developer.mvpdemo.adapter.ArticleAdapter
-import com.jayyin.developer.mvpdemo.article.ArticlePresenter
+import com.jayyin.developer.mvpdemo.presenter.ArticlePresenter
+import com.jayyin.developer.mvpdemo.base.BaseActivity
+import com.jayyin.developer.mvpdemo.base.BasePresenter
 import com.jayyin.developer.mvpdemo.interfaces.ArticleViewInterface
 import com.jayyin.developer.mvpdemo.manager.RequestQueueMgr
 import com.jayyin.developer.mvpdemo.model.Article
@@ -20,13 +19,13 @@ import java.util.*
  * @author JerryYin
  * @create 2019-02-22 18:30
  **/
-class ArticleActivity : AppCompatActivity(), ArticleViewInterface {
+class ArticleActivity : BaseActivity<ArticleViewInterface, ArticlePresenter>(), ArticleViewInterface {
 
     //    var mRecyclerView: RecyclerView? = null;
 //    var mProgressBar: ProgressBar? = null
     var mArticlesList = LinkedList<Article>()
     var mArticleAdapter: ArticleAdapter? = null
-    var mPresenter: ArticlePresenter? = null
+//    var mPresenter: ArticlePresenter? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +37,11 @@ class ArticleActivity : AppCompatActivity(), ArticleViewInterface {
         requestData()
     }
 
+    override fun createPresenter(): BasePresenter<ArticleViewInterface>? {
+        //构建presenter中间人； 建立view-model-presenter联系
+        mPresenter = ArticlePresenter(this)
+        return mPresenter
+    }
 
     private fun initViews() {
         rcv_article.layoutManager = LinearLayoutManager(this)
@@ -45,21 +49,16 @@ class ArticleActivity : AppCompatActivity(), ArticleViewInterface {
 
         rcv_article.setHasFixedSize(true)
         rcv_article.adapter = mArticleAdapter
-
-        //
-
     }
 
     private fun initValues() {
         //初始化请求队列
         RequestQueueMgr.init(this)
-        //构建presenter中间人； 建立view-model-presenter联系
-        mPresenter = ArticlePresenter(this)
     }
 
     fun requestData() {
         //请求
-        mPresenter!!.fetchArticles()
+        (mPresenter!! as ArticlePresenter).fetchArticles()
     }
 
     override fun showArticles(articles: List<Article>) {
