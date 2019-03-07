@@ -1,7 +1,9 @@
 package com.jayyin.developer.mvpdemo.presenter
 
+import android.content.Context
 import com.jayyin.developer.mvpdemo.article.ArticleApiImpl
 import com.jayyin.developer.mvpdemo.article.ArticleModelImpl
+import com.jayyin.developer.mvpdemo.base.BaseActivity
 import com.jayyin.developer.mvpdemo.base.BasePresenter
 import com.jayyin.developer.mvpdemo.interfaces.ArticleViewInterface
 import com.jayyin.developer.mvpdemo.interfaces.onDataListener
@@ -28,14 +30,11 @@ class ArticlePresenter(
      */
     fun fetchArticles() {
         mArticleView.showLoading()
-
         mArticleApi.fetchArticles(listener = object : onDataListener<LinkedList<Article>> {
 
             override fun onComplete(articles: LinkedList<Article>) {
                 //数据请求完毕，需要传递给view进行刷新显示
                 mArticleView.showArticles(articles)
-
-
                 mArticleView.hideLoading()
 
                 //存储到本地

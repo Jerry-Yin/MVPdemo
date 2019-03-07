@@ -36,7 +36,7 @@ class ArticleAdapter(
         var article = dataList[position]
         if (holder != null){
             holder.title.setText(article.titles)
-            holder.content.setText(article.content)
+            holder.content.setText("This is the content of this article, that's "+article.content)
         }
     }
 

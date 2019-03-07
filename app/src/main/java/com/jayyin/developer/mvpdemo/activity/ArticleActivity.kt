@@ -61,19 +61,26 @@ class ArticleActivity : BaseActivity<ArticleViewInterface, ArticlePresenter>(), 
         (mPresenter!! as ArticlePresenter).fetchArticles()
     }
 
+
     override fun showArticles(articles: List<Article>) {
-        if (mArticlesList.size > 0 && articles.size > 0)
-            mArticlesList.clear()
-        mArticlesList.addAll(articles)
-        mArticleAdapter!!.notifyDataSetChanged()
+        runOnUiThread {
+            if (mArticlesList.size > 0 && articles.size > 0)
+                mArticlesList.clear()
+            mArticlesList.addAll(articles)
+            mArticleAdapter!!.notifyDataSetChanged()
+        }
     }
 
     override fun showLoading() {
-        pgbar.visibility = View.VISIBLE
+        runOnUiThread {
+            pgbar.visibility = View.VISIBLE
+        }
     }
 
     override fun hideLoading() {
-        pgbar.visibility = View.GONE
+        runOnUiThread {
+            pgbar.visibility = View.GONE
+        }
     }
 
 }
